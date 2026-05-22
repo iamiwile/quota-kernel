@@ -19,17 +19,19 @@ if [[ "$HOME_FSTYPE" == "ext4" && "$HOME_SOURCE" != "$ROOT_SOURCE" ]]; then
     echo "Activando EXT4 kernel quota."
     sudo umount /home
     sudo tune2fs -O quota "$HOME_SOURCE"
+    echo ""
+    echo "Ejecutando e2fsck..."
+    sudo e2fsck -f "$HOME_SOURCE"
     echo "OK"
 fi
 
 echo ""
-echo "Ejecutando e2fsck..."
-sudo e2fsck -f "$HOME_SOURCE"
-echo ""
 echo "Verificando feature..."
 sudo tune2fs -l "$HOME_SOURCE" | grep quota
-sudo mount /home
+
 echo ""
 echo "==========================================="
 echo " COMPLETADO"
 echo "==========================================="
+echo ""
+sudo mount /home
